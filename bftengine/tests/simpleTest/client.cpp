@@ -264,7 +264,7 @@ int main(int argc, char **argv) {
     // the python script that runs the client needs to know how many
     // iterations has been done - that's the reason we use printf and not
     // logging module - to keep the output exactly as we expect.
-      if (i > 0 && i % 100 == 0) {
+      if (i > 0 && i % 1000 == 0) {
           // printf("Iterations count: 100\n");
           // printf("Total iterations count: %i\n", i);
           LOG_WARN(clientLogger, "Total iterations count: " << i);
