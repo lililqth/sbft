@@ -236,12 +236,13 @@ class SimpleAppState : public RequestsHandler {
       auto lastValue = get_last_state_value(clientId);
       *pRet = lastValue;
       outActualReplySize = sizeof(uint64_t);
+      LOG_INFO(replicaLogger, "in replica packet size: " << requestSize);
     } else {
       // Our read-write request includes one eight-byte argument, in addition to
       // the request type.
       test_assert(requestSize == 2 * sizeof(uint64_t),
           "requestSize != " << 2 * sizeof(uint64_t));
-
+        LOG_INFO(replicaLogger, "in replica else packet size: " << requestSize);
       // We only support the WRITE operation in read-write mode.
       const uint64_t* pReqId = reinterpret_cast<const uint64_t*>(request);
       test_assert(*pReqId == SET_VAL_REQ, "*preqId != " << SET_VAL_REQ);
