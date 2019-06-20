@@ -238,7 +238,7 @@ public:
             auto lastValue = get_last_state_value(clientId);
             memcpy(pRet, lastValue, sizeof(lastValue));
             outActualReplySize = sizeof(uint64_t);
-            LOG_DEBUG(replicaLogger, "in replica size: " << requestSize);
+            LOG_INFO(replicaLogger, "in replica size: " << requestSize);
         } else {
             // Our read-write request includes one eight-byte argument, in addition to
             // the request type.
@@ -252,7 +252,7 @@ public:
             //const uint64_t* pReqVal = (pReqId + 1);
             char payload[MAX_MTU];
             memcpy(payload, request, sizeof(request));
-            LOG_DEBUG(replicaLogger, "in replica else size: " << requestSize);
+            LOG_INFO(replicaLogger, "in replica else size: " << requestSize);
 
             // Modify the register state.
             set_last_state_value(clientId, payload);
