@@ -390,9 +390,9 @@ namespace bftEngine
 			}
 
 			const size_t requestsInQueue = requestsQueueOfPrimary.size();
-
+            LOG_INFO_F(GL, "in trytosendpreparemsg 1 size=%d", (int)requestsQueueOfPrimary.size());
 			if (requestsInQueue == 0) return;
-
+            LOG_INFO_F(GL, "in trytosendpreparemsg 2 size=%d", (int)requestsQueueOfPrimary.size());
 			Assert(primaryLastUsedSeqNum >= lastExecutedSeqNum);
 
 			uint64_t concurrentDiff = ((primaryLastUsedSeqNum + 1) - lastExecutedSeqNum);
@@ -400,7 +400,7 @@ namespace bftEngine
 
 			// update maxNumberOfPendingRequestsInRecentHistory (if needed)
 			if (requestsInQueue > maxNumberOfPendingRequestsInRecentHistory)  maxNumberOfPendingRequestsInRecentHistory = requestsInQueue;
-
+            LOG_INFO_F(GL, "in trytosendpreparemsg 3 size=%d", (int)requestsQueueOfPrimary.size());
 			// TODO(GG): the batching logic should be part of the configuration - TBD.
 			if (batchingLogic && (concurrentDiff >= 2))
 			{
@@ -412,7 +412,7 @@ namespace bftEngine
 			}
 
 			if (requestsInQueue < minBatchSize) return;
-
+            LOG_INFO_F(GL, "in trytosendpreparemsg 4 size=%d", (int)requestsQueueOfPrimary.size());
 			primaryLastUsedSeqNum++;
 
 			// update batchingFactor
@@ -445,6 +445,7 @@ namespace bftEngine
 				delete nextRequest;
 				requestsQueueOfPrimary.pop();
 				nextRequest = (requestsQueueOfPrimary.size() > 0 ? requestsQueueOfPrimary.front() : nullptr);
+                LOG_INFO_F(GL, "in trytosendpreparemsg 5 size=%d", (int)requestsQueueOfPrimary.size());
 			}
 
 			pp->finishAddingRequests();
