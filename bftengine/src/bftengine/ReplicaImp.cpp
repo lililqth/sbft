@@ -435,6 +435,9 @@ namespace bftEngine
 			PrePrepareMsg *pp = new PrePrepareMsg(myReplicaId, curView, primaryLastUsedSeqNum, firstPath, false);
 
 			ClientRequestMsg* nextRequest = requestsQueueOfPrimary.front();
+
+            LOG_INFO_F(GL, "in trytosendpreparemsg nextRequest size=%d", nextRequest->size());
+
 			while (nextRequest != nullptr && nextRequest->size() <= pp->remainingSizeForRequests())
 			{
 				if (clientsManager->noPendingAndRequestCanBecomePending(nextRequest->clientProxyId(), nextRequest->requestSeqNum()))
