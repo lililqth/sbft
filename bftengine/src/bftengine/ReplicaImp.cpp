@@ -282,7 +282,7 @@ void ReplicaImp::MsgReceiver::onConnectionStatusChanged(
     const NodeNum node, const ConnectionStatus newStatus) {}
 
 void ReplicaImp::onMessage(ClientRequestMsg* m) {
-  LOG_INFO_F("Size of client message is %d", sizeof(m));
+  LOG_INFO_F("Size of client message is %d", m->requestLength());
 
   metric_received_client_requests_.Get().Inc();
   const NodeIdType senderId = m->senderId();
@@ -392,7 +392,6 @@ void ReplicaImp::onMessage(ClientRequestMsg* m) {
 
 void ReplicaImp::tryToSendPrePrepareMsg(bool batchingLogic) {
   batchingLogic = false;
-  LOG_INFO_F("Size of sended preprepare message is %d", sizeof(pp));
 
   Assert(isCurrentPrimary() && currentViewIsActive());
 
@@ -517,6 +516,7 @@ void ReplicaImp::tryToSendPrePrepareMsg(bool batchingLogic) {
              (int)pp->numberOfRequests(),
              (int)requestsQueueOfPrimary.size());
 
+  LOG_INFO_F("Size of sended preprepare message is %d", pp->size);
   for (ReplicaId x : repsInfo->idsOfPeerReplicas()) {
     sendRetransmittableMsgToReplica(pp, x, primaryLastUsedSeqNum);
   }
