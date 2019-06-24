@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
     // logging module - to keep the output exactly as we expect.
 
     if (i > 0 && i % 1000 == 0) {
-      LOG_INFO("Iterations count: 1000\n");
+      LOG_INFO(clientLogger, "Iterations count: 1000\n");
       // printf("Total iterations count: %i\n", i);
       //   LOG_WARN(clientLogger, "Total iterations count: " << i);
     }
@@ -284,7 +284,7 @@ int main(int argc, char** argv) {
       // Prepare request parameters.
       const bool readOnly = true;
 
-      const uint32_t kRequestLength = 1;
+      const uint32_t kRequestLength = 313;
       const uint64_t requestBuffer[kRequestLength] = {READ_VAL_REQ};
       const char* rawRequestBuffer =
           reinterpret_cast<const char*>(requestBuffer);

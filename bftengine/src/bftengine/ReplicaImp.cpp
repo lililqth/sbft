@@ -282,7 +282,7 @@ void ReplicaImp::MsgReceiver::onConnectionStatusChanged(
     const NodeNum node, const ConnectionStatus newStatus) {}
 
 void ReplicaImp::onMessage(ClientRequestMsg* m) {
-  LOG_INFO_F("Size of client message is %d", m->requestLength());
+  LOG_INFO_F(GL, "Size of client message is %d", m->requestLength());
 
   metric_received_client_requests_.Get().Inc();
   const NodeIdType senderId = m->senderId();
@@ -516,7 +516,7 @@ void ReplicaImp::tryToSendPrePrepareMsg(bool batchingLogic) {
              (int)pp->numberOfRequests(),
              (int)requestsQueueOfPrimary.size());
 
-  LOG_INFO_F("Size of sended preprepare message is %d", pp->size);
+  LOG_INFO_F(GL, "Size of sended preprepare message is %d", pp->size());
   for (ReplicaId x : repsInfo->idsOfPeerReplicas()) {
     sendRetransmittableMsgToReplica(pp, x, primaryLastUsedSeqNum);
   }
@@ -565,7 +565,7 @@ bool ReplicaImp::relevantMsgForActiveView(const T* msg) {
 }
 
 void ReplicaImp::onMessage(PrePrepareMsg* msg) {
-  LOG_INFO_F("Size of received preprepare message is ", sizeof(msg));
+  LOG_INFO_F(GL, "Size of received preprepare message is ", msg->size());
 
   metric_received_pre_prepares_.Get().Inc();
   const SeqNum msgSeqNum = msg->seqNumber();
