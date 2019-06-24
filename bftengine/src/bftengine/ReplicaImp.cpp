@@ -167,6 +167,7 @@ void ReplicaImp::metaMessageHandler(MessageBase* msg) {
   T* validMsg = nullptr;
   bool isValid = T::ToActualMsgType(*repsInfo, msg, validMsg);
 
+  //   onMessage(validMsg);
   if (isValid) {
     onMessage(validMsg);
   } else {
@@ -487,8 +488,10 @@ void ReplicaImp::tryToSendPrePrepareMsg(bool batchingLogic) {
   LOG_INFO_F(
       GL, "in trytosendpreparemsg nextRequest size=%d", nextRequest->size());
 
-  while (nextRequest != nullptr &&
+  int reqsInBatch = 0;
+  while (nextRequest != nullptr && reqsInBatch == 0 &&
          nextRequest->size() <= pp->remainingSizeForRequests()) {
+    reqsInBatch = 1;
     if (clientsManager->noPendingAndRequestCanBecomePending(
             nextRequest->clientProxyId(), nextRequest->requestSeqNum())) {
       pp->addRequest(nextRequest->body(), nextRequest->size());

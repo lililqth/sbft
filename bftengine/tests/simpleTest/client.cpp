@@ -207,7 +207,7 @@ int main(int argc, char** argv) {
   const uint16_t id = cp.clientId;
 
   // How often to read the latest value of the register (every `readMod` ops).
-  const int readMod = 7;
+  const int readMod = cp.numOfOperations;
 
   // Concord clients must tag each request with a unique sequence number. This
   // generator handles that for us.
@@ -284,7 +284,7 @@ int main(int argc, char** argv) {
       // Prepare request parameters.
       const bool readOnly = true;
 
-      const uint32_t kRequestLength = 313;
+      const uint32_t kRequestLength = 1;
       const uint64_t requestBuffer[kRequestLength] = {READ_VAL_REQ};
       const char* rawRequestBuffer =
           reinterpret_cast<const char*>(requestBuffer);
@@ -328,13 +328,12 @@ int main(int argc, char** argv) {
       // Prepare request parameters.
       const bool readOnly = false;
 
-      //      const uint32_t kRequestLength = 2;
-      //      const uint64_t requestBuffer[kRequestLength] =
-      //          {SET_VAL_REQ, expectedLastValue};
-      //      const char* rawRequestBuffer =
-      //          reinterpret_cast<const char*>(requestBuffer);
-      //      const uint32_t rawRequestLength = sizeof(uint64_t) *
-      //      kRequestLength;
+      const uint32_t kRequestLength = 1;
+      const uint64_t requestBuffer[kRequestLength] = {SET_VAL_REQ,
+                                                      expectedLastValue};
+      const char* rawRequestBuffer =
+          reinterpret_cast<const char*>(requestBuffer);
+      const uint32_t rawRequestLength = sizeof(uint64_t) * kRequestLength;
 
       char payload[MAX_MTU] = "Welcome Msg";
 
@@ -348,8 +347,8 @@ int main(int argc, char** argv) {
       uint32_t actualReplyLength = 0;
 
       client->sendRequest(readOnly,
-                          payload,
-                          sizeof(payload),
+                          rawRequestBuffer,
+                          rawRequestLength,
                           requestSequenceNumber,
                           timeout,
                           kReplyBufferLength,
